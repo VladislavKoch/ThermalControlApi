@@ -1,0 +1,30 @@
+server:
+  port:
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect:
+
+  datasource:
+    driver-class-name:
+    url:
+    username:
+    password:
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:init.sql
+
+
+telegram:
+  bot:
+    name:
+    token:
+    site:
