@@ -55,11 +55,9 @@ void setup() {
   timeClient.begin();             //time web server init
   timeClient.setTimeOffset(10800);//Msk zone
   timeClient.update();
-  if (timeClient.getEpochTime() > 1638316800) { //check for absurde (01.01.2020)
-    RtcDateTime rtcNow;
-    rtcNow.InitWithUnix64Time(timeClient.getEpochTime()); //get actual Msk time from server
-    Rtc.SetDateTime(rtcNow);                              //set time to rtc module
-  }
+  RtcDateTime rtcNow;
+  rtcNow.InitWithUnix64Time(timeClient.getEpochTime()); //get actual Msk time from server
+  Rtc.SetDateTime(rtcNow);                              //set time to rtc module
 }
 
 void loop() {
