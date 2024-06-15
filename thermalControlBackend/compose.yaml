@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  client-backend:
+    image: client:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${API_PORTS}
+    depends_on:
+      - service-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://service-db/${DB_NAME}
+      - TZ=Europe/Moscow
+    volumes:
+      - ./api-data:/var/lib/api/data
+    restart: on-failure
+
+  service-db:
+    image: postgres:16.3-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORTS}
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin :
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4:7
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - ${PGADMIN_PORTS}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+  api-data:
