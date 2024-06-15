@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New user</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/api/v1/administration/users}" th:object="${user}">
+    <label for="login">Логин: </label>
+    <input type="text" th:field="*{login}" id="login"/>
+    <div style="color:red" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">login Error</div>
+    <br/>
+    <label for="password">Пароль: </label>
+    <input type="text" th:field="*{password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</div>
+    <br/>
+    <label for="telegram">Telegram id: </label>
+    <input type="text" th:field="*{telegram}" id="telegram"/>
+    <div style="color:red" th:if="${#fields.hasErrors('telegram')}" th:errors="*{telegram}">telegram Error</div>
+    <br/>
+    <label for="roles">Роли: </label>
+    <input type="text" th:field="*{roles}" id="roles"/>
+    <div style="color:red" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}">roles Error</div>
+    <br/>
+    <input type="submit" value="Добавить!"/>
+</form>
+<br>
+<form th:method="GET" th:action="@{/api/v1/administration/users}">
+    <input type="submit" value="Вернуться к списку пользователей"/>
+</form>
+</body>
+</html>
